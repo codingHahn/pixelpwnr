@@ -67,17 +67,21 @@ impl Painter {
                 // Get the channels
                 let channels = pixel.channels();
 
-                // Define the color
-                let color = Color::from(channels[0], channels[1], channels[2], channels[3]);
+                // If alpha is zero, don't even send pixel
+                if channels[3] != 0 {
+
+                    // Define the color
+                    let color = Color::from(channels[0], channels[1], channels[2], channels[3]);
 
 
-                // Set the pixel
-                if let Some(client) = &mut self.client {
-                    client.write_pixel(
-                        x + self.area.x + self.offset.0,
-                        y + self.area.y + self.offset.1,
-                        color,
-                    )?;
+                    // Set the pixel
+                    if let Some(client) = &mut self.client {
+                        client.write_pixel(
+                            x + self.area.x + self.offset.0,
+                            y + self.area.y + self.offset.1,
+                            color,
+                        )?;
+                    }
                 }
             }
         }
